@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -23,7 +22,7 @@ public class AdminController {
     }
 
     @GetMapping("users/{id}")
-    public String adminPage(@PathVariable("id") Long id, Model model) {
+    public String userProfile(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "show_user_by_id";
     }
@@ -36,6 +35,7 @@ public class AdminController {
 
     @GetMapping("users/new")
     public String newUser(Model model) {
+        model.addAttribute("roles", roleService.findAllRoles());
         model.addAttribute("user", new User());
         return "new";
     }
@@ -43,10 +43,7 @@ public class AdminController {
     @PostMapping("users/new")
     public String addNewUser(@ModelAttribute("user") @Valid User user,
                              BindingResult bindingResult,
-                             @RequestParam(defaultValue = "ROLE_USER", value = "role") String[] roles) {
-        if (!userService.findUsernameInBD(user.getUsername())) {
-            bindingResult.addError(new ObjectError("usernameNotUnique", "Username is already taken"));
-        }
+                             @RequestParam(value = "rolesList[]") String[] roles) {
         if (bindingResult.hasErrors()) {
             return "new";
         }
@@ -59,6 +56,7 @@ public class AdminController {
 
     @GetMapping("users/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("roles", roleService.findAllRoles());
         model.addAttribute("user", userService.findById(id));
         return "edit";
     }
@@ -67,10 +65,7 @@ public class AdminController {
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
                          @PathVariable("id") Long id,
-                         @RequestParam(defaultValue = "ROLE_USER", value = "role") String[] roles) {
-        if (!userService.findUsernameInBD(user.getUsername())) {
-            bindingResult.addError(new ObjectError("usernameNotUnique", "Username is already taken"));
-        }
+                         @RequestParam(value = "roles") String[] roles) {
         if (bindingResult.hasErrors()) {
             return "edit";
         } else {

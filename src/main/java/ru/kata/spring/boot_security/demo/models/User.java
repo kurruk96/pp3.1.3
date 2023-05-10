@@ -19,12 +19,18 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
-    private String username;
 
-    @Column(name = "email")
+    @Column(name = "firstName")
+    @NotEmpty(message = "First name should not be empty")
+    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
+    private String firstName;
+
+    @Column(name = "lastName")
+    @NotEmpty(message = "Last name should not be empty")
+    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
+    private String lastName;
+
+    @Column(name = "email", unique = true)
     @NotEmpty(message = "Email should not be empty")
     @Email(message = "Email should be valid")
     private String email;
@@ -50,13 +56,13 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public User(String username, int age) {
-        this.username = username;
+    public User(String email, int age) {
+        this.email = email;
         this.age = age;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
     @Override
@@ -79,8 +85,8 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setUsername(String name) {
-        this.username = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
     public String getEmail() {
@@ -89,6 +95,14 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getAge() {
@@ -116,6 +130,11 @@ public class User implements UserDetails {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -132,7 +151,7 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + firstName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", password='" + password + '\'' +

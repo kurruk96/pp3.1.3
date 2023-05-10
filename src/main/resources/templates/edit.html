@@ -13,18 +13,15 @@
 
 <form th:method="PATCH" th:action="@{/admin/users/{id}/edit(id=${user.getId()})}" th:object="${user}">
     <div>
-        <label for="username">Username</label>
-        <input type="text" th:field="*{username}" id="username"/>
-        <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</div>
-        <div style="color:red" th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Error</p>
-        </div>
+        <label for="firstName">First Name</label>
+        <input type="text" th:field="*{firstName}" id="firstName"/>
+        <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</div>
 
         <br/>
 
-        <label for="password">Password</label>
-        <input type="password" th:field="*{password}" id="password"/>
-        <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
+        <label for="lastName">Last Name</label>
+        <input type="text" th:field="*{lastName}" id="lastName"/>
+        <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</div>
 
         <br/>
 
@@ -40,10 +37,17 @@
 
         <br/>
 
-        <label>Roles:
-            <label><input type="checkbox" name="role" value="ROLE_ADMIN">ADMIN</label>
-            <label><input type="checkbox" name="role" value="ROLE_USER">USER</label>
+        <label for="password">Password</label>
+        <input type="password" th:field="*{password}" id="password"/>
+        <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
 
+        <br/>
+
+        <label>
+            <select size="3" multiple name="rolesList[]" required>
+                <option disabled>Roles: </option>
+                <option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name}">Role name</option>
+            </select>
         </label>
 
         <br/>
