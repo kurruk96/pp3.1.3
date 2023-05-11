@@ -16,6 +16,7 @@ public class RoleServiceImpl implements RoleService {
         this.roleRepository = roleRepository;
     }
 
+    @Override
     public Set<Role> makeSetRolesFromArray(String[] roles) {
         Set<Role> ourRoles = new HashSet<>();
         for(String role : roles) {
@@ -24,6 +25,7 @@ public class RoleServiceImpl implements RoleService {
         return ourRoles;
     }
 
+    @Override
     public List<Role> findAllRoles(){
         return roleRepository.findAll();
     }
